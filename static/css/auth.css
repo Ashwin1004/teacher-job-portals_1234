@@ -1,0 +1,260 @@
+/* =========================================
+   AUTH PAGES & DASHBOARDS & CURSOR
+   ========================================= */
+
+/* Cursor */
+body {
+    cursor: none; /* Hide default cursor to use custom one */
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+    mix-blend-mode: multiply;
+}
+
+.custom-cursor.hover {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(245, 158, 11, 0.2);
+    border-color: transparent;
+}
+
+/* Background gradient mesh */
+.bg-gradient-mesh-large {
+    position: absolute;
+    top: -20%; left: -20%;
+    width: 140%; height: 140%;
+    background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
+    z-index: -1;
+    filter: blur(80px);
+}
+
+/* Auth Layout */
+.auth-main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 20px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glass Orbs */
+.glass-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 0;
+}
+
+.orb-1 {
+    width: 300px;
+    height: 300px;
+    background: var(--primary);
+    top: 10%;
+    left: 20%;
+    opacity: 0.2;
+    animation: float 8s ease-in-out infinite alternate;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent);
+    bottom: 10%;
+    right: 15%;
+    opacity: 0.15;
+    animation: float 10s ease-in-out infinite alternate-reverse;
+}
+
+/* Auth Card Glassmorphism */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.25);
+    border-radius: var(--border-radius-lg);
+    position: relative;
+    z-index: 10;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 3rem 2.5rem;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+}
+
+/* Inputs */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 1.2rem;
+    transform: translateY(-50%);
+    color: var(--primary-light);
+    font-size: 1.1rem;
+}
+
+.auth-form input, .auth-form select {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 1px solid rgba(30, 58, 138, 0.1);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+.auth-form input:focus, .auth-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: white;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.auth-footer a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Flash Messages */
+.flash-messages {
+    margin-bottom: 1.5rem;
+}
+
+.flash {
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.flash.error {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FCA5A5;
+}
+
+.flash.success {
+    background: #F0FDF4;
+    color: #16A34A;
+    border: 1px solid #86EFAC;
+}
+
+/* Animations */
+.slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dashboards */
+.dashboard-header {
+    background: var(--primary-dark);
+    padding: 6rem 0 3rem;
+    color: white;
+    margin-bottom: -50px;
+}
+
+.dashboard-header h1 {
+    color: white;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dash-card {
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.dash-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.dash-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.dash-card .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}

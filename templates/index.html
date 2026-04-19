@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect | Modern Education Recruitment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <style>
+        /* Ultra-Modern UI Override Styles */
+        :root {
+            --ui-bg: #f8fafc;
+            --ui-primary: #4F46E5; /* Indigo */
+            --ui-secondary: #06B6D4; /* Cyan */
+            --ui-accent: #F59E0B; /* Amber */
+        }
+        body { background: var(--ui-bg); overflow-x: hidden; }
+        
+        .modern-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        /* Animated Abstract Background Blobs */
+        .blob-1 {
+            position: absolute; top: -10%; left: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, transparent 60%);
+            border-radius: 50%; filter: blur(40px); z-index: 0;
+            animation: float 12s infinite alternate ease-in-out;
+        }
+        .blob-2 {
+            position: absolute; bottom: -20%; right: -10%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 60%);
+            border-radius: 50%; filter: blur(50px); z-index: 0;
+            animation: float 15s infinite alternate-reverse ease-in-out;
+        }
+        .blob-3 {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
+            border-radius: 50%; filter: blur(40px); z-index: 0;
+            animation: pulse-blob 8s infinite alternate ease-in-out;
+        }
+
+        /* Glass Floating Cards */
+        .floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            z-index: 5;
+            display: flex; align-items: center; gap: 1rem;
+            transform: translateY(0);
+        }
+        .fc-1 { top: 25%; left: 10%; animation: float 6s infinite alternate ease-in-out; }
+        .fc-2 { bottom: 20%; right: 10%; animation: float 8s infinite alternate-reverse ease-in-out; }
+        
+        .hero-content {
+            position: relative; z-index: 10;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--ui-primary), var(--ui-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .btn-modern-primary {
+            background: linear-gradient(135deg, var(--ui-primary), #3b82f6);
+            color: white; padding: 1.2rem 3rem; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 600; text-decoration: none;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .btn-modern-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(79, 70, 229, 0.6); color: white; }
+        
+        .btn-modern-secondary {
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
+            color: var(--ui-primary); padding: 1.2rem 3rem; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 600; text-decoration: none;
+            border: 2px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .btn-modern-secondary:hover { background: white; transform: translateY(-3px); }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 24px;
+            padding: 3rem 2rem; transition: all 0.4s ease;
+        }
+        .feature-box:hover { transform: translateY(-10px); background: white; box-shadow: 0 30px 60px -12px rgba(79, 70, 229, 0.15); }
+        
+        @keyframes pulse-blob {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor"></div>
+
+    <nav class="navbar scrolled" style="background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.5);">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon" style="background: var(--ui-primary); color:white;"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span style="font-family: 'Outfit', sans-serif;">Edu<strong>Connect</strong></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="{{ url_for('job_listing') }}">Find Jobs</a></li>
+                {% if session.get('user_id') %}
+                    {% if session.get('role') == 'teacher' %}
+                        <li><a href="{{ url_for('teacher_dashboard') }}" class="btn-text">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('recruiter_dashboard') }}" class="btn-text">Dashboard</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}" class="btn-modern-secondary" style="padding: 0.5rem 1.5rem">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" class="btn-text">Log In</a></li>
+                    <li><a href="{{ url_for('register') }}" class="btn-modern-primary" style="padding: 0.5rem 1.5rem">Join Now</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modern Hero Section -->
+    <main class="modern-hero">
+        <div class="blob-1"></div>
+        <div class="blob-2"></div>
+        <div class="blob-3"></div>
+        
+        <!-- Floating Elements -->
+        <div class="floating-card fc-1" style="display:none; @media(min-width:1024px){display:flex;}">
+            <div style="width:50px; height:50px; border-radius:12px; background:#DCFCE7; color:#10B981; display:flex; align-items:center; justify-content:center; font-size:1.5rem;"><i class="fa-solid fa-check"></i></div>
+            <div>
+                <p style="margin:0; font-weight:700; color:#1E293B;">Fast Approval</p>
+                <p style="margin:0; font-size:0.85rem; color:#64748B;">Hired in 48 hours</p>
+            </div>
+        </div>
+        
+        <div class="floating-card fc-2" style="display:none; @media(min-width:1024px){display:flex;}">
+            <div style="width:50px; height:50px; border-radius:12px; background:#FEF3C7; color:#F59E0B; display:flex; align-items:center; justify-content:center; font-size:1.5rem;"><i class="fa-solid fa-briefcase"></i></div>
+            <div>
+                <p style="margin:0; font-weight:700; color:#1E293B;">2k+ Jobs</p>
+                <p style="margin:0; font-size:0.85rem; color:#64748B;">Updated daily</p>
+            </div>
+        </div>
+
+        <div class="container hero-content">
+            <div class="slide-up" style="display:inline-flex; align-items:center; gap:10px; padding: 0.5rem 1.2rem; background:white; box-shadow:0 10px 20px rgba(0,0,0,0.05); color: #1E293B; border-radius: 50px; font-weight:600; margin-bottom:2rem; font-size:0.9rem; font-family:'Outfit', sans-serif;">
+                <span style="background:var(--ui-primary); color:white; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.8rem;">NEW</span> The Smartest Way to Get Hired
+            </div>
+
+            <h1 class="slide-up" style="font-size: 5rem; color: #0F172A; line-height: 1.1; margin-bottom: 1.5rem; font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -1px;">
+                Accelerate Your <br><span class="gradient-text">Teaching Career</span>
+            </h1>
+            
+            <p class="slide-up" style="animation-delay: 0.1s; font-size: 1.3rem; color: #475569; margin-bottom: 3.5rem; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                The next generation employment platform for elite educators. Say goodbye to messy applications and hello to intelligent matching.
+            </p>
+            
+            <div class="hero-buttons slide-up" style="animation-delay: 0.2s; display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 4rem;">
+                <a href="{{ url_for('job_listing') }}" class="btn-modern-primary"><i class="fa-solid fa-rocket" style="margin-right:8px;"></i> View Openings</a>
+                {% if not session.get('user_id') %}
+                    <a href="{{ url_for('register') }}" class="btn-modern-secondary"><i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Create Profile</a>
+                {% endif %}
+            </div>
+            
+            <!-- Sleek Stats -->
+            <div class="hero-stats slide-up" style="animation-delay: 0.3s; display: flex; justify-content: center; gap: 3rem; background: white; padding: 2rem 4rem; border-radius: 30px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); display: inline-flex;">
+                <div class="stat" style="text-align:left;">
+                    <h3 style="font-size: 2.2rem; color: var(--ui-primary); margin: 0; font-family: 'Outfit', sans-serif; font-weight:800;">500<span style="color:#CBD5E1;">+</span></h3>
+                    <p style="color: #64748B; margin: 0; font-weight: 500; font-size: 0.9rem;">Partner Schools</p>
+                </div>
+                <div style="width:2px; background:#F1F5F9;"></div>
+                <div class="stat" style="text-align:left;">
+                    <h3 style="font-size: 2.2rem; color: var(--ui-secondary); margin: 0; font-family: 'Outfit', sans-serif; font-weight:800;">2k<span style="color:#CBD5E1;">+</span></h3>
+                    <p style="color: #64748B; margin: 0; font-weight: 500; font-size: 0.9rem;">Active Positions</p>
+                </div>
+                <div style="width:2px; background:#F1F5F9;"></div>
+                <div class="stat" style="text-align:left;">
+                    <h3 style="font-size: 2.2rem; color: var(--ui-accent); margin: 0; font-family: 'Outfit', sans-serif; font-weight:800;">10k<span style="color:#CBD5E1;">+</span></h3>
+                    <p style="color: #64748B; margin: 0; font-weight: 500; font-size: 0.9rem;">Teachers Hired</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Why Choose Us - Modern Glass Grid -->
+    <section class="container" style="padding: 8rem 0; position:relative; z-index:10;">
+        <div style="text-align:center; margin-bottom: 5rem;">
+            <h2 style="font-size:3rem; color:#0F172A; font-family:'Outfit', sans-serif; font-weight:800; letter-spacing:-1px;">Why Top Educators Choose Us</h2>
+            <p style="color:#64748B; font-size:1.2rem; max-width:600px; margin:0 auto;">Revolutionizing how talented teachers find the world's best classrooms.</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="feature-box">
+                <div style="width:80px; height:80px; border-radius:20px; background:linear-gradient(135deg, #10B981, #059669); color:white; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:2rem; box-shadow:0 10px 20px rgba(16, 185, 129, 0.3);">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3 style="font-family:'Outfit', sans-serif; font-size:1.5rem; color:#0F172A; margin-bottom:1rem;">Algorithmic Matching</h3>
+                <p style="color:#64748B; line-height:1.7;">Our intelligent systems instantly connect your unique syllabus expertise with schools searching for exactly your profile.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div style="width:80px; height:80px; border-radius:20px; background:linear-gradient(135deg, var(--ui-primary), #3b82f6); color:white; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:2rem; box-shadow:0 10px 20px rgba(79, 70, 229, 0.3);">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 style="font-family:'Outfit', sans-serif; font-size:1.5rem; color:#0F172A; margin-bottom:1rem;">1-Click Applications</h3>
+                <p style="color:#64748B; line-height:1.7;">Build your flawless profile once. Instantly apply to thousands of jobs securely with a single tap. Save hours of data entry.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div style="width:80px; height:80px; border-radius:20px; background:linear-gradient(135deg, var(--ui-accent), #D97706); color:white; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:2rem; box-shadow:0 10px 20px rgba(245, 158, 11, 0.3);">
+                    <i class="fa-solid fa-ranking-star"></i>
+                </div>
+                <h3 style="font-family:'Outfit', sans-serif; font-size:1.5rem; color:#0F172A; margin-bottom:1rem;">Direct Access to Admins</h3>
+                <p style="color:#64748B; line-height:1.7;">Bypass the middlemen. Your application drops seamlessly and directly onto the dashboards of School Recruiters globally.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background:#0F172A; padding:4rem 0; color:white; text-align:center;">
+        <div class="logo-icon" style="background: white; color:var(--ui-primary); font-size:1.5rem; width:50px; height:50px; display:inline-flex; border-radius:50%; align-items:center; justify-content:center; margin-bottom:1rem;"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h2 style="font-family:'Outfit', sans-serif; margin-bottom:0.5rem;">EduConnect</h2>
+        <p style="color:#94A3B8; max-width:400px; margin:0 auto">Empowering the next generation of educators by connecting brilliance with opportunity.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Applicants | EduConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo" style="text-decoration:none;">
+                <i class="fa-solid fa-graduation-cap"></i> EduConnect
+            </a>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('recruiter_dashboard') }}"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="{{ url_for('post_job') }}"><i class="fa-solid fa-plus-circle"></i> Post a Job</a>
+                <a href="{{ url_for('job_listing') }}"><i class="fa-solid fa-magnifying-glass"></i> View Jobs</a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-topbar slide-up">
+                <div>
+                    <a href="{{ url_for('recruiter_dashboard') }}" style="color:#6B7280; font-size:0.9rem; text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+                    <h1 style="margin-top:0.5rem">Review Applicants</h1>
+                    <p>Applications for: <strong>{{ job.title }}</strong> at {{ job.location }}</p>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="dash-section slide-up" style="padding:1rem; border-left: 4px solid var(--success); background:#DCFCE7; color:#166534">
+                            <i class="fa-solid fa-check-circle"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="dash-section slide-up" style="animation-delay:0.1s">
+                <div class="section-title">
+                    <i class="fa-solid fa-users-viewfinder" style="color:var(--primary)"></i> Candidate List
+                </div>
+                
+                {% if apps %}
+                <div class="table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Qualification</th>
+                                <th>Skills</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in apps %}
+                            <tr>
+                                <td>
+                                    <strong>{{ app.name }}</strong><br>
+                                    <small style="color:#6B7280">✉️ {{ app.email }}</small>
+                                </td>
+                                <td>{{ app.qualification if app.qualification else '-' }}</td>
+                                <td>{{ app.skills if app.skills else '-' }}</td>
+                                <td>{{ app.applied_at[:10] }}</td>
+                                <td>
+                                    {% if app.status == 'Pending' %}
+                                        <span class="badge-status badge-pending">Pending</span>
+                                    {% elif app.status == 'Shortlisted' %}
+                                        <span class="badge-status badge-accepted">Shortlisted</span>
+                                    {% else %}
+                                        <span class="badge-status" style="background:#FEE2E2; color:#DC2626">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div style="display:flex; gap:8px;">
+                                        <a href="{{ url_for('update_application', app_id=app.id, status='Shortlisted') }}" class="btn-accent" style="padding: 0.4rem 0.8rem; font-size:0.8rem; border-radius:6px; background:#10B981; border:none"><i class="fa-solid fa-check"></i> Accept</a>
+                                        <a href="{{ url_for('update_application', app_id=app.id, status='Rejected') }}" class="btn-outline" style="padding: 0.4rem 0.8rem; font-size:0.8rem; border-radius:6px; border-color:#DC2626; color:#DC2626;"><i class="fa-solid fa-xmark"></i> Reject</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div style="text-align:center; padding: 3rem 0; color:#9CA3AF">
+                    <i class="fa-solid fa-user-xmark" style="font-size:3rem; margin-bottom:1rem;"></i>
+                    <p>No candidates have applied for this job yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Jobs | EduConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo" style="text-decoration:none;">
+                <i class="fa-solid fa-graduation-cap"></i> EduConnect
+            </a>
+            <div class="sidebar-menu">
+                {% if session.get('role') == 'recruiter' %}
+                    <a href="{{ url_for('recruiter_dashboard') }}"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                    <a href="{{ url_for('post_job') }}"><i class="fa-solid fa-plus-circle"></i> Post a Job</a>
+                {% elif session.get('role') == 'teacher' %}
+                    <a href="{{ url_for('teacher_dashboard') }}"><i class="fa-solid fa-chalkboard-user"></i> Dashboard</a>
+                    <a href="{{ url_for('edit_profile') }}"><i class="fa-solid fa-user-pen"></i> My Profile</a>
+                {% else %}
+                    <a href="/"><i class="fa-solid fa-home"></i> Home</a>
+                {% endif %}
+                <a href="{{ url_for('job_listing') }}" class="active"><i class="fa-solid fa-magnifying-glass"></i> Job Board</a>
+            </div>
+            <div class="sidebar-footer">
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="dash-main" style="background:#F3F4F6;">
+            <div class="dash-topbar slide-up">
+                <div>
+                    <h1>Explore Opportunities</h1>
+                    <p>Find your next teaching position with ease.</p>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="dash-section slide-up" style="padding:1rem; border-left: 4px solid {% if category=='error' %}#DC2626{% else %}var(--success){% endif %}; background:white; color:{% if category=='error' %}#DC2626{% else %}#166534{% endif %}">
+                            <i class="fa-solid fa-circle-info"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('job_listing') }}" method="GET" class="search-container slide-up" style="animation-delay:0.1s">
+                <div class="search-input">
+                    <i class="fa-solid fa-book"></i>
+                    <input type="text" name="subject" value="{{ subject }}" placeholder="Subject (e.g. Math, History)">
+                </div>
+                <div class="search-input">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" name="location" value="{{ location }}" placeholder="Location">
+                </div>
+                <button type="submit" class="btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">Search</button>
+                <a href="{{ url_for('job_listing') }}" class="btn-text" style="padding: 0 1rem; margin-top:0.5rem">Clear</a>
+            </form>
+
+            <div class="slide-up" style="animation-delay:0.2s">
+                {% if jobs %}
+                    <div style="display:grid; grid-template-columns: 1fr; gap:1.5rem">
+                    {% for job in jobs %}
+                        <div class="job-card">
+                            <div class="job-header">
+                                <div>
+                                    <h2 class="job-title">{{ job.title }}</h2>
+                                    <p class="job-school"><i class="fa-solid fa-building-columns"></i> {{ job.school_name }}</p>
+                                </div>
+                                {% if session.get('role') == 'teacher' %}
+                                    <form action="{{ url_for('apply_job', job_id=job.id) }}" method="POST">
+                                        <button type="submit" class="btn-accent" style="border-radius:10px;">Apply Now</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="job-meta">
+                                <span><i class="fa-solid fa-book-open"></i> {{ job.subject }}</span>
+                                <span><i class="fa-solid fa-location-dot"></i> {{ job.location }}</span>
+                                {% if job.salary %}
+                                    <span><i class="fa-solid fa-sack-dollar"></i> {{ job.salary }}</span>
+                                {% endif %}
+                                <span><i class="fa-solid fa-clock"></i> Posted {{ job.created_at[:10] }}</span>
+                            </div>
+                            
+                            <p style="color:#4B5563; line-height:1.7;">
+                                {{ job.description[:250] }}{% if job.description|length > 250 %}...{% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <div style="text-align:center; padding: 4rem; background:white; border-radius:16px;">
+                        <i class="fa-solid fa-magnifying-glass" style="font-size:4rem; color:#D1D5DB; margin-bottom:1rem"></i>
+                        <h3 style="color:#374151">No jobs found</h3>
+                        <p style="color:#6B7280">Try adjusting your search criteria.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

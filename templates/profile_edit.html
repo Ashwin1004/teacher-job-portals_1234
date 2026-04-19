@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | EduConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo" style="text-decoration:none;">
+                <i class="fa-solid fa-graduation-cap"></i> EduConnect
+            </a>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('teacher_dashboard') }}"><i class="fa-solid fa-chalkboard-user"></i> Dashboard</a>
+                <a href="{{ url_for('edit_profile') }}" class="active"><i class="fa-solid fa-user-pen"></i> My Profile</a>
+                <a href="{{ url_for('job_listing') }}"><i class="fa-solid fa-magnifying-glass"></i> Find Jobs</a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="dash-main">
+            <div class="dash-topbar slide-up">
+                <div>
+                    <h1>Educator Profile</h1>
+                    <p>Update your credentials, experience, and skills.</p>
+                </div>
+            </div>
+
+            <div class="dash-section slide-up" style="animation-delay:0.1s">
+                <div class="section-title">
+                    <i class="fa-solid fa-address-card" style="color:var(--primary)"></i> Profile Details
+                </div>
+                
+                <form action="{{ url_for('edit_profile') }}" method="POST" class="dash-form">
+                            <div class="form-group">
+                                <label>Highest Qualification</label>
+                                <input type="text" name="qualification" value="{{ profile.qualification if profile else '' }}" placeholder="e.g. Master's in English Literature" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" name="phone" value="{{ profile.phone if profile else '' }}" placeholder="e.g. +1 234 567 8900" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Resume / Portfolio Link</label>
+                                    <input type="url" name="resume_link" value="{{ profile.resume_link if profile else '' }}" placeholder="e.g. Google Drive link or LinkedIn profile" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Years of Experience & Details</label>
+                                <textarea name="experience" rows="4" placeholder="Briefly describe your teaching background..." required>{{ profile.experience if profile else '' }}</textarea>
+                            </div>
+                    
+                    <div class="form-group">
+                        <label>Key Skills / Subjects</label>
+                        <input type="text" name="skills" value="{{ profile.skills if profile.skills else '' }}" placeholder="e.g. Mathematics, Calculus, Student Counseling">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="margin-top:1rem; font-size:1.1rem; padding: 0.8rem 2rem;">Save Changes</button>
+                    <a href="{{ url_for('teacher_dashboard') }}" class="btn-text" style="margin-left:1rem">Cancel</a>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo" style="text-decoration:none;">
+                <i class="fa-solid fa-graduation-cap"></i> EduConnect
+            </a>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('teacher_dashboard') }}" class="active"><i class="fa-solid fa-chalkboard-user"></i> Dashboard</a>
+                <a href="{{ url_for('edit_profile') }}"><i class="fa-solid fa-user-pen"></i> My Profile</a>
+                <a href="{{ url_for('job_listing') }}"><i class="fa-solid fa-magnifying-glass"></i> Find Jobs</a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="dash-main">
+            <div class="dash-topbar slide-up">
+                <div>
+                    <h1>Welcome, {{ session.name }}!</h1>
+                    <p>Here is your classroom overview.</p>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <a href="{{ url_for('job_listing') }}" class="btn-accent" style="padding: 0.6rem 1.2rem; font-size:0.9rem">Search Jobs</a>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="dash-section slide-up" style="padding:1rem; border-left: 4px solid var(--success); background:#DCFCE7; color:#166534">
+                            <i class="fa-solid fa-check-circle"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="dash-grid slide-up" style="animation-delay:0.1s">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="icon-box bg-pastel-blue"><i class="fa-solid fa-award"></i></div>
+                    </div>
+                    <h3>Qualification</h3>
+                    <div class="dash-value" style="font-size:1.2rem; margin-top:0.5rem">{{ profile.qualification if profile and profile.qualification else 'Not specified' }}</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="icon-box bg-pastel-green"><i class="fa-solid fa-briefcase"></i></div>
+                    </div>
+                    <h3>Experience</h3>
+                    <div class="dash-value" style="font-size:1.2rem; margin-top:0.5rem">{{ profile.experience[:20] + '...' if profile and profile.experience else 'Not specified' }}</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="icon-box bg-pastel-orange"><i class="fa-solid fa-address-book"></i></div>
+                    </div>
+                    <h3>Contact Info</h3>
+                    <div class="dash-value" style="font-size:1rem; margin-top:0.5rem">
+                        {{ profile.phone if profile and profile.phone else 'No phone added' }}<br>
+                        {% if profile and profile.resume_link %}
+                            <a href="{{ profile.resume_link }}" target="_blank" style="display:inline-block; margin-top:10px; color:#4F46E5; text-decoration:none; font-weight:600;"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Resume</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="dash-section slide-up" style="animation-delay:0.2s">
+                <div class="section-title">
+                    <i class="fa-solid fa-paper-plane" style="color:var(--primary)"></i> My Applied Jobs
+                </div>
+                
+                {% if applications %}
+                <div class="table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>School</th>
+                                <th>Location</th>
+                                <th>Date Applied</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                            <tr>
+                                <td><strong>{{ app.title }}</strong></td>
+                                <td>{{ app.school_name }}</td>
+                                <td><i class="fa-solid fa-location-dot" style="color:#9CA3AF"></i> {{ app.location }}</td>
+                                <td>{{ app.applied_at[:10] }}</td>
+                                <td><span class="badge-status badge-pending">{{ app.status }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div style="text-align:center; padding: 3rem 0; color:#9CA3AF">
+                    <i class="fa-solid fa-folder-open" style="font-size:3rem; margin-bottom:1rem;"></i>
+                    <p>You haven't applied to any jobs yet.</p>
+                    <a href="{{ url_for('job_listing') }}" class="btn-outline" style="margin-top:1rem">Browse Jobs</a>
+                </div>
+                {% endif %}
+            </div>
+            
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

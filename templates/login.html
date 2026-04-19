@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect | Login</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="school-pattern"></div>
+    <div class="bg-gradient-mesh-large"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span>Edu<strong>Connect</strong></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ url_for('register') }}" class="btn-accent">Join Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="auth-main">
+        <div class="glass-orb orb-1"></div>
+        <div class="glass-orb orb-2"></div>
+        
+        <div class="auth-card glass-panel slide-up">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Log in to access your dashboard.</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}"><i class="fa-solid fa-circle-info"></i> {{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('login') }}" method="POST" class="auth-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope input-icon"></i>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-block p-ripple">Log In <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+            </form>
+            
+            <p class="auth-footer">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
